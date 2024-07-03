@@ -4,7 +4,7 @@
 %undefine __arch_install_post
 
 Name:           typora
-Version:        1.8.10
+Version:        1.9.3
 Release:        1%{?dist}
 Summary:        Markdown Editor
 License:        Proprietary
@@ -40,15 +40,24 @@ install -Dm644 %{S:3} -t %{buildroot}/opt/typora/
 %{_datarootdir}/icons/hicolor/scalable/apps/typora.svg
 /opt/typora/
 
+%pre
+
 %post
 ln -sf /opt/typora/Typora /usr/bin/typora
 xdg-mime install --mode system --novendor /opt/typora/typora.xml
 xdg-mime default typora.desktop text/markdown
 
 %preun
-xdg-mime uninstall --mode system /opt/typora/typora.xml
-rm -f /usr/bin/typora
+if [ "$1" -eq 0 ]; then
+  xdg-mime uninstall --mode system /opt/typora/typora.xml
+  rm -f /usr/bin/typora
+fi
+
+%postun
 
 %changelog
+* Thu Jun 20 2024 nobody <nobody@nobody.com> - 1.9.3
+  - new version
+
 * Tue May 21 2024 nobody <nobody@nobody.com> - 1.8.10
   - new version

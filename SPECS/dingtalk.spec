@@ -5,7 +5,7 @@
 
 # https://dtapp-pub.dingtalk.com/dingtalk-desktop/xc_dingtalk_update/linux_deb/Update/other/amd64/linux_dingtalk_update_package_gray.json
 Name:           dingtalk
-Version:        7.5.20.40523
+Version:        7.5.20.40605
 Release:        1%{?dist}
 Summary:        dingtalk
 License:        Proprietary
@@ -46,6 +46,11 @@ install -Dm755 %{S:3} -t %{buildroot}%{_bindir}
 /opt/dingtalk/
 
 %changelog
+* Thu Jun 13 2024 nobody <nobody@nobody.com> - 7.5.20.40605
+  -【功能】左侧导航栏功能入口开放
+  -【兼容性】剪切板卡顿问题修复
+  -【问题】修复若干 bug & 稳定性问题
+
 * Fri May 24 2024 nobody <nobody@nobody.com> - 7.5.20.40523
   -【功能】左侧导航栏功能入口开放
   -【兼容性】剪切板卡顿问题修复

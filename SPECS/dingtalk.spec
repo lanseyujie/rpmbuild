@@ -5,7 +5,7 @@
 
 # https://dtapp-pub.dingtalk.com/dingtalk-desktop/xc_dingtalk_update/linux_deb/Update/other/amd64/linux_dingtalk_update_package_gray.json
 Name:           dingtalk
-Version:        7.5.20.40605
+Version:        7.6.15.4102301
 Release:        1%{?dist}
 Summary:        dingtalk
 License:        Proprietary
@@ -28,7 +28,7 @@ Requires:       libstdc++.so.6()(64bit)
 dpkg -X %{S:0} %{_builddir}/%{name}-%{version}
 
 %build
-rm -rf %{_builddir}/%{name}-%{version}/opt/apps/com.alibabainc.dingtalk/files/*Release*/{libm.so*,libstdc++.so*}
+rm -rf %{_builddir}/%{name}-%{version}/opt/apps/com.alibabainc.dingtalk/files/*Release*/{libm.so*,libstdc++.so*,libharfbuzz.so*,libGLX.so*,libGLdispatch.so*}
 
 %install
 install -d %{buildroot}/opt/dingtalk
@@ -46,6 +46,13 @@ install -Dm755 %{S:3} -t %{buildroot}%{_bindir}
 /opt/dingtalk/
 
 %changelog
+* Fri Nov 8 2024 nobody <nobody@nobody.com> - 7.6.15.4102301
+  -【功能】组织面板升级
+  -【功能】合并转发支持更多消息种类，可嵌套
+  -【功能】支持存储空间管理
+  -【问题】支持主窗口拖出屏幕
+  -【问题】修复若干 bug & 稳定性问题
+
 * Thu Jun 13 2024 nobody <nobody@nobody.com> - 7.5.20.40605
   -【功能】左侧导航栏功能入口开放
   -【兼容性】剪切板卡顿问题修复

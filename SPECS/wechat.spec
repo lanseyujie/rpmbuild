@@ -4,18 +4,18 @@
 %undefine __arch_install_post
 
 Name:           wechat
-Version:        4.0.0.21
+Version:        4.0.0.30
 Release:        1%{?dist}
 Summary:        WeChat
 License:        Proprietary
 URL:            https://weixin.qq.com
-Source0:        https://archive2.kylinos.cn/DEB/KYLIN_DEB/pool/main/deb/wechat/wechat-beta_%{version}_amd64.deb
+Source0:        https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.rpm
 Source1:        wechat.desktop
 Source2:        wechat.svg
 Source3:        wechat
 
 AutoReqProv:    no
-BuildRequires:  dpkg
+BuildRequires:  rpm, cpio
 Requires:       libbz2.so.1()(64bit)
 
 %description
@@ -23,7 +23,7 @@ WeChat from Tencent
 
 %prep
 %setup -T -c %{name}-%{version}
-dpkg -X %{S:0} %{_builddir}/%{name}-%{version}
+rpm2cpio %{S:0} | cpio -idmv --no-absolute-filenames -D %{_builddir}/%{name}-%{version}
 
 %build
 
@@ -43,6 +43,9 @@ install -Dm755 %{S:3} -t %{buildroot}%{_bindir}
 /opt/wechat/
 
 %changelog
+* Fri Nov 8 2024 nobody <nobody@nobody.com> - 4.0.0.30
+  - new version
+
 * Mon Nov 4 2024 nobody <nobody@nobody.com> - 4.0.0.21
   - new version
 

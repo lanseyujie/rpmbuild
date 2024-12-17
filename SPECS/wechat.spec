@@ -3,8 +3,9 @@
 %define _build_id_links none
 %undefine __arch_install_post
 
+# https://linux.weixin.qq.com
 Name:           wechat
-Version:        4.0.0.30
+Version:        4.0.1.7
 Release:        1%{?dist}
 Summary:        WeChat
 License:        Proprietary
@@ -30,7 +31,6 @@ rpm2cpio %{S:0} | cpio -idmv --no-absolute-filenames -D %{_builddir}/%{name}-%{v
 %install
 install -d %{buildroot}/opt/wechat/
 cp -r %{_builddir}/%{name}-%{version}/opt/wechat*/* %{buildroot}/opt/wechat/
-cp -L /usr/lib64/libbz2.so.1 %{buildroot}/opt/wechat/libbz2.so.1.0
 install -Dm644 %{S:1} -t %{buildroot}%{_datarootdir}/applications/
 # Icon From: https://github.com/vinceliuice/WhiteSur-icon-theme
 install -Dm644 %{S:2} -t %{buildroot}%{_datarootdir}/icons/hicolor/scalable/apps/
@@ -43,6 +43,9 @@ install -Dm755 %{S:3} -t %{buildroot}%{_bindir}
 /opt/wechat/
 
 %changelog
+* Thu Dec 12 2024 nobody <nobody@nobody.com> - 4.0.1.7
+  - new version
+
 * Fri Nov 8 2024 nobody <nobody@nobody.com> - 4.0.0.30
   - new version
 

@@ -5,7 +5,7 @@
 - [x] DingTalk
 - [x] Typora
 - [x] WeChat
-
+- [x] Yubico Authenticator
 
 
 Packaging for Fedora 40/41

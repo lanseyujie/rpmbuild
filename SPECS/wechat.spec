@@ -3,13 +3,12 @@
 %define _build_id_links none
 %undefine __arch_install_post
 
-# https://linux.weixin.qq.com
 Name:           wechat
 Version:        4.0.1.7
 Release:        1%{?dist}
 Summary:        WeChat
 License:        Proprietary
-URL:            https://weixin.qq.com
+URL:            https://linux.weixin.qq.com
 Source0:        https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_x86_64.rpm
 Source1:        wechat.desktop
 Source2:        wechat.svg

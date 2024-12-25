@@ -5,7 +5,7 @@
 
 # https://dtapp-pub.dingtalk.com/dingtalk-desktop/xc_dingtalk_update/linux_deb/Update/other/amd64/linux_dingtalk_update_package_gray.json
 Name:           dingtalk
-Version:        7.6.25.4112601
+Version:        7.6.25.4122001
 Release:        1%{?dist}
 Summary:        dingtalk
 License:        Proprietary
@@ -46,6 +46,11 @@ install -Dm755 %{S:3} -t %{buildroot}%{_bindir}
 /opt/dingtalk/
 
 %changelog
+* Tue Dec 24 2024 nobody <nobody@nobody.com> - 7.6.25.4122001
+  -【功能】极速模式聊天体验优化
+  -【性能】性能优化，降低 CPU 使用
+  -【优化】修复若干 bug & 稳定性问题 & 安全性升级
+
 * Thu Dec 12 2024 nobody <nobody@nobody.com> - 7.6.25.4112601
   -【功能】新增 Beta 功能：极速模式聊天（需要在 [设置]-[高级] 中开启，如果遇到问题，可以随时关闭极速模式聊天）
   -【问题】修复若干 bug & 稳定性问题 & 安全性升级

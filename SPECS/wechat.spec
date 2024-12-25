@@ -4,7 +4,7 @@
 %undefine __arch_install_post
 
 Name:           wechat
-Version:        4.0.1.7
+Version:        4.0.1.11
 Release:        1%{?dist}
 Summary:        WeChat
 License:        Proprietary
@@ -42,6 +42,9 @@ install -Dm755 %{S:3} -t %{buildroot}%{_bindir}
 /opt/wechat/
 
 %changelog
+* Tue Dec 24 2024 nobody <nobody@nobody.com> - 4.0.1.11
+  - new version
+
 * Thu Dec 12 2024 nobody <nobody@nobody.com> - 4.0.1.7
   - new version
 

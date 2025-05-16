@@ -4,7 +4,7 @@
 %undefine __arch_install_post
 
 Name:           typora
-Version:        1.9.3
+Version:        1.10.8
 Release:        1%{?dist}
 Summary:        Markdown Editor
 License:        Proprietary
@@ -56,6 +56,9 @@ fi
 %postun
 
 %changelog
+* Thu Feb 27 2025 nobody <nobody@nobody.com> - 1.10.8
+  - new version
+
 * Thu Jun 20 2024 nobody <nobody@nobody.com> - 1.9.3
   - new version
 

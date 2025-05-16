@@ -5,7 +5,7 @@
 
 # https://dtapp-pub.dingtalk.com/dingtalk-desktop/xc_dingtalk_update/linux_deb/Update/other/amd64/linux_dingtalk_update_package_gray.json
 Name:           dingtalk
-Version:        7.6.25.4122001
+Version:        7.6.45.5041701
 Release:        1%{?dist}
 Summary:        dingtalk
 License:        Proprietary
@@ -46,6 +46,13 @@ install -Dm755 %{S:3} -t %{buildroot}%{_bindir}
 /opt/dingtalk/
 
 %changelog
+* Sun Apr 21 2025 nobody <nobody@nobody.com> - 7.6.45.5041701
+  - 极速模式聊天优化，修复若干问题
+  - 上线新版本左侧导航栏、DING通知
+  - 新增云打印功能
+  - 修复AI助手相关问题
+  - 若干其他体验优化、问题修复
+
 * Tue Dec 24 2024 nobody <nobody@nobody.com> - 7.6.25.4122001
   -【功能】极速模式聊天体验优化
   -【性能】性能优化，降低 CPU 使用

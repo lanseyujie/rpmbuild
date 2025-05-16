@@ -5,7 +5,7 @@
 
 # https://www.yubico.com/products/yubico-authenticator/
 Name:           yubico-authenticator
-Version:        7.1.1
+Version:        7.2.0
 Release:        1%{?dist}
 Summary:        Yubico Authenticator
 License:        Apache 2.0
@@ -46,5 +46,8 @@ install -Dm644 %{S:2} -t %{buildroot}%{_datarootdir}/icons/hicolor/scalable/apps
 %post
 
 %changelog
+* Web Mar 26 2025 nobody <nobody@nobody.com> - 7.2.0
+  - new version
+
 * Tue Dec 24 2024 nobody <nobody@nobody.com> - 7.1.1
   - new version

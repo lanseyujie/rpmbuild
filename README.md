@@ -1,16 +1,15 @@
 # rpmbuild
 
-
-
 - [x] DingTalk
+
 - [x] Typora
+
 - [x] WeChat
+
 - [x] Yubico Authenticator
 
 
-Packaging for Fedora 40+
-
-[![Build Status](actions/workflows/build.yml/badge.svg)](actions/workflows/build.yml)
+Packaging for Fedora 40+ [![Build Status](actions/workflows/build.yml/badge.svg)](actions/workflows/build.yml)
 
 ```shell
 cd ~/rpmbuild

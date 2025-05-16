@@ -1,0 +1,41 @@
+name: Build Package
+
+on:
+  push:
+    branches:
+      - test
+  watch:
+    types: started
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: /github/home/rpmbuild
+    container:
+      image: fedora:latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        working-directory: /github/home
+        run: |
+          cp -rv $GITHUB_WORKSPACE $HOME/rpmbuild
+          dnf install -y rpmdevtools
+          dnf builddep -y $HOME/rpmbuild/SPECS/*.spec
+
+      - name: Build Packages
+        run: |
+          for spec in ./SPECS/*.spec; do
+            spectool -gR $spec
+            rpmbuild -ba $spec
+          done
+
+      - name: Upload Packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpm
+          path: /github/home/rpmbuild/RPMS/**/*.rpm

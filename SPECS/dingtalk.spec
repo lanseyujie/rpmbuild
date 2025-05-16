@@ -16,7 +16,7 @@ Source2:        dingtalk.svg
 Source3:        dingtalk
 
 AutoReqProv:    no
-BuildRequires:  dpkg
+BuildRequires:  dpkg execstack
 Requires:       libcrypt.so.1()(64bit)
 Requires:       libstdc++.so.6()(64bit)
 
@@ -29,6 +29,7 @@ dpkg -X %{S:0} %{_builddir}/%{name}-%{version}
 
 %build
 rm -rf %{_builddir}/%{name}-%{version}/opt/apps/com.alibabainc.dingtalk/files/*Release*/{libm.so*,libstdc++.so*,libharfbuzz.so*,libGLX.so*,libGLdispatch.so*}
+execstack -c %{_builddir}/%{name}-%{version}/opt/apps/com.alibabainc.dingtalk/files/*Release*/dingtalk_dll.so
 
 %install
 install -d %{buildroot}/opt/dingtalk

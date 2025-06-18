@@ -8,8 +8,10 @@
 
 - [x] Yubico Authenticator
 
+- [x] DSView
 
-Packaging for Fedora 40+ [![Build Status](actions/workflows/build.yml/badge.svg)](actions/workflows/build.yml)
+
+Packaging for Fedora 40+ [![Build Status](https://github.com/lanseyujie/rpmbuild/actions/workflows/build.yml/badge.svg)](actions/workflows/build.yml)
 
 ```shell
 cd ~/rpmbuild

@@ -33,12 +33,12 @@ rm -rf linux_support README* desktop_integration.sh
 %install
 install -d %{buildroot}/opt/yubico-authenticator/
 cp -r %{_builddir}/%{name}-%{version}/yubico-authenticator*/* %{buildroot}/opt/yubico-authenticator/
-install -Dm644 %{S:1} -t %{buildroot}%{_datarootdir}/applications/
-install -Dm644 %{S:2} -t %{buildroot}%{_datarootdir}/icons/hicolor/scalable/apps/
+install -Dm644 %{S:1} -t %{buildroot}%{_datadir}/applications/
+install -Dm644 %{S:2} -t %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/
 
 %files
-%{_datarootdir}/applications/yubico-authenticator.desktop
-%{_datarootdir}/icons/hicolor/scalable/apps/yubico-authenticator.svg
+%{_datadir}/applications/yubico-authenticator.desktop
+%{_datadir}/icons/hicolor/scalable/apps/yubico-authenticator.svg
 /opt/yubico-authenticator/
 
 %pre

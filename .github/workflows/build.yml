@@ -3,7 +3,7 @@ name: Build Package
 on:
   push:
     branches:
-      - test
+      - dev
   watch:
     types: started
 
@@ -24,6 +24,7 @@ jobs:
         working-directory: /github/home
         run: |
           cp -rv $GITHUB_WORKSPACE $HOME/rpmbuild
+          dnf upgrade --refresh -y
           dnf install -y rpmdevtools
           dnf builddep -y $HOME/rpmbuild/SPECS/*.spec
 

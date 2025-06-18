@@ -30,14 +30,14 @@ cd %{_builddir}/%{name}-%{version}/usr/share/typora/
 %install
 install -d %{buildroot}/opt/typora/
 cp -r %{_builddir}/%{name}-%{version}/usr/share/typora/* %{buildroot}/opt/typora/
-install -Dm644 %{S:1} -t %{buildroot}%{_datarootdir}/applications/
+install -Dm644 %{S:1} -t %{buildroot}%{_datadir}/applications/
 # Icon From: https://github.com/vinceliuice/WhiteSur-icon-theme
-install -Dm644 %{S:2} -t %{buildroot}%{_datarootdir}/icons/hicolor/scalable/apps/
+install -Dm644 %{S:2} -t %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/
 install -Dm644 %{S:3} -t %{buildroot}/opt/typora/
 
 %files
-%{_datarootdir}/applications/typora.desktop
-%{_datarootdir}/icons/hicolor/scalable/apps/typora.svg
+%{_datadir}/applications/typora.desktop
+%{_datadir}/icons/hicolor/scalable/apps/typora.svg
 /opt/typora/
 
 %pre

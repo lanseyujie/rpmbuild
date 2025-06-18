@@ -30,14 +30,14 @@ rpm2cpio %{S:0} | cpio -idmv --no-absolute-filenames -D %{_builddir}/%{name}-%{v
 %install
 install -d %{buildroot}/opt/wechat/
 cp -r %{_builddir}/%{name}-%{version}/opt/wechat*/* %{buildroot}/opt/wechat/
-install -Dm644 %{S:1} -t %{buildroot}%{_datarootdir}/applications/
+install -Dm644 %{S:1} -t %{buildroot}%{_datadir}/applications/
 # Icon From: https://github.com/vinceliuice/WhiteSur-icon-theme
-install -Dm644 %{S:2} -t %{buildroot}%{_datarootdir}/icons/hicolor/scalable/apps/
+install -Dm644 %{S:2} -t %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/
 install -Dm755 %{S:3} -t %{buildroot}%{_bindir}
 
 %files
-%{_datarootdir}/applications/wechat.desktop
-%{_datarootdir}/icons/hicolor/scalable/apps/wechat.svg
+%{_datadir}/applications/wechat.desktop
+%{_datadir}/icons/hicolor/scalable/apps/wechat.svg
 %{_bindir}/wechat
 /opt/wechat/
 

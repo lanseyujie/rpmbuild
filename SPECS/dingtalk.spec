@@ -34,15 +34,15 @@ execstack -c %{_builddir}/%{name}-%{version}/opt/apps/com.alibabainc.dingtalk/fi
 %install
 install -d %{buildroot}/opt/dingtalk
 cp -r %{_builddir}/%{name}-%{version}/opt/apps/com.alibabainc.dingtalk/files/{version,*Release*} %{buildroot}/opt/dingtalk/
-install -Dm644 %{S:1} -t %{buildroot}%{_datarootdir}/applications/
+install -Dm644 %{S:1} -t %{buildroot}%{_datadir}/applications/
 # Icon From: https://github.com/vinceliuice/Tela-icon-theme/
-install -Dm644 %{S:2} -t %{buildroot}%{_datarootdir}/icons/hicolor/scalable/apps/
+install -Dm644 %{S:2} -t %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/
 install -Dm755 %{S:3} -t %{buildroot}%{_bindir}
 # chmod 4755 {buildroot}/opt/dingtalk/plugins/dtwebview/chrome-sandbox
 
 %files
-%{_datarootdir}/applications/dingtalk.desktop
-%{_datarootdir}/icons/hicolor/scalable/apps/dingtalk.svg
+%{_datadir}/applications/dingtalk.desktop
+%{_datadir}/icons/hicolor/scalable/apps/dingtalk.svg
 %{_bindir}/dingtalk
 /opt/dingtalk/
 

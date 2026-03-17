@@ -1,42 +1,159 @@
-name: Build Package
+name: Build Packages
 
 on:
   push:
     branches:
       - dev
-  watch:
-    types: started
+    paths:
+      - .github/workflows/build.yml
+      - SPECS/**
+      - SOURCES/**
+  workflow_dispatch:
+    inputs:
+      target_spec:
+        description: Optional package name, spec file, or SPECS path to build
+        required: false
+        type: string
+        default: ""
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  discover-specs:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: /github/home/rpmbuild
-    container:
-      image: fedora:latest
-    if: github.event.repository.owner.id == github.event.sender.id
+    outputs:
+      matrix: ${{ steps.collect.outputs.matrix }}
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Install Dependencies
-        working-directory: /github/home
-        run: |
-          cp -rv $GITHUB_WORKSPACE $HOME/rpmbuild
-          dnf upgrade --refresh -y
-          dnf install -y rpmdevtools
-          dnf builddep -y $HOME/rpmbuild/SPECS/*.spec
-
-      - name: Build Packages
-        run: |
-          for spec in ./SPECS/*.spec; do
-            spectool -gR $spec
-            rpmbuild -ba $spec
-          done
-
-      - name: Upload Packages
-        uses: actions/upload-artifact@v4
+        uses: actions/checkout@v5
         with:
-          name: rpm
-          path: /github/home/rpmbuild/RPMS/**/*.rpm
+          fetch-depth: 0
+
+      - name: Collect Spec Matrix
+        id: collect
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+          TARGET_SPEC: ${{ github.event.inputs.target_spec || '' }}
+        run: |
+          set -euo pipefail
+          mapfile -t all_specs < <(find SPECS -maxdepth 1 -type f -name '*.spec' | sort)
+          specs=()
+          use_all_specs=true
+
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            if [[ -n "$TARGET_SPEC" ]]; then
+              case "$TARGET_SPEC" in
+                SPECS/*.spec) candidate="$TARGET_SPEC" ;;
+                *.spec) candidate="SPECS/$TARGET_SPEC" ;;
+                *) candidate="SPECS/$TARGET_SPEC.spec" ;;
+              esac
+
+              if [[ ! -f "$candidate" ]]; then
+                echo "::error::target_spec '$TARGET_SPEC' did not match a file in SPECS/."
+                exit 1
+              fi
+
+              specs=("$candidate")
+              use_all_specs=false
+            fi
+          elif [[ "$EVENT_NAME" == "push" && -n "$BEFORE_SHA" && "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+            mapfile -t changed < <(git diff --name-only "$BEFORE_SHA" "$HEAD_SHA")
+            if ((${#changed[@]})) && ! printf '%s\n' "${changed[@]}" | grep -qvE '^SPECS/[^/]+\.spec$'; then
+              mapfile -t specs < <(
+                printf '%s\n' "${changed[@]}" |
+                  sort -u |
+                  while read -r spec; do
+                    [[ -f "$spec" ]] && printf '%s\n' "$spec"
+                  done
+              )
+              use_all_specs=false
+            fi
+          fi
+
+          if [[ "$use_all_specs" == "true" ]]; then
+            specs=("${all_specs[@]}")
+          fi
+
+          matrix="$(
+            printf '%s\n' "${specs[@]}" |
+              jq -Rnc '[inputs | select(length > 0) | {name: (split("/")[-1] | sub("\\.spec$"; "")), spec: .}]'
+          )"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: discover-specs
+    if: needs.discover-specs.outputs.matrix != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container:
+      image: fedora:44
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.discover-specs.outputs.matrix) }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ github.workspace }}
+    env:
+      DNF_OPTS: --setopt=install_weak_deps=False --setopt=keepcache=True
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+
+      - name: Install Build Tooling
+        run: |
+          set -euo pipefail
+          dnf install --refresh -y $DNF_OPTS rpmdevtools rpm-build dnf-plugins-core
+
+      - name: Install Build Dependencies
+        run: |
+          set -euo pipefail
+          dnf builddep -y $DNF_OPTS "${{ matrix.package.spec }}"
+
+      - name: Fetch Sources
+        run: |
+          set -euo pipefail
+          spectool -gR --define "_topdir $GITHUB_WORKSPACE" "${{ matrix.package.spec }}"
+
+      - name: Build RPMs
+        run: |
+          set -euo pipefail
+          rpmbuild --define "_topdir $GITHUB_WORKSPACE" -bb "${{ matrix.package.spec }}"
+
+      - name: Prepare Package Artifacts
+        run: |
+          set -euo pipefail
+          shopt -s globstar nullglob
+
+          artifact_dir="artifacts/${{ matrix.package.name }}"
+          mkdir -p "$artifact_dir"
+
+          rpms=(RPMS/**/${{ matrix.package.name }}-*.rpm)
+          if ((${#rpms[@]} == 0)); then
+            echo "::error::No binary RPMs were produced for ${{ matrix.package.name }}."
+            exit 1
+          fi
+
+          cp -t "$artifact_dir" "${rpms[@]}"
+
+          (
+            cd "$artifact_dir"
+            sha256sum *.rpm > SHA256SUMS
+          )
+
+      - name: Upload Package Artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: rpm-${{ matrix.package.name }}
+          if-no-files-found: error
+          retention-days: 3
+          path: ${{ github.workspace }}/artifacts/${{ matrix.package.name }}

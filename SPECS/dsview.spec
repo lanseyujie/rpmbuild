@@ -1,51 +1,68 @@
 %global __brp_check_rpaths %{nil}
 %global debug_package %{nil}
+%{!?_udevrulesdir:%global _udevrulesdir %{_prefix}/lib/udev/rules.d}
 %define _build_id_links none
 %undefine __arch_install_post
 
 Name:           dsview
 Version:        1.3.2
-Release:        1%{?dist}
-Summary:        DSView
-License:        GPLv3
+Release:        2%{?dist}
+Summary:        Graphical frontend for DreamSourceLab instruments
+License:        GPL-2.0-or-later
 URL:            https://github.com/DreamSourceLab/DSView
-Source0:        https://github.com/DreamSourceLab/DSView/archive/refs/heads/master.zip
-# Source0:        https://codeload.github.com/DreamSourceLab/DSView/tar.gz/refs/tags/v{version}
+Source0:        https://github.com/DreamSourceLab/DSView/archive/refs/tags/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 Patch0:         dsview.patch
 
-AutoReqProv:    no
-BuildRequires:  gcc g++ make cmake glib2-devel python3-devel fftw-devel libusb1-devel qt5-qtbase-devel boost-devel
+ExclusiveArch:  x86_64
+BuildRequires:  boost-devel
+BuildRequires:  cmake
+BuildRequires:  desktop-file-utils
+BuildRequires:  fftw-devel
+BuildRequires:  gcc-c++
+BuildRequires:  glib2-devel
+BuildRequires:  libusb1-devel
+BuildRequires:  pkgconf-pkg-config
+BuildRequires:  python3-devel
+BuildRequires:  qt5-qtbase-devel
+BuildRequires:  zlib-devel
 
 %description
-An open source multi-function instrument for everyone.
+DSView is an open source multi-function instrument application for
+DreamSourceLab devices.
 
 %prep
-%setup -T -c %{name}-%{version}
-# tar -zxvf %{S:0} --strip-components=1 -C %{_builddir}/%{name}-%{version}
-unzip %{S:0} -d %{_builddir}/%{name}-%{version}
-mv %{_builddir}/%{name}-%{version}/DS*/* %{_builddir}/%{name}-%{version}
-cd %{_builddir}/%{name}-%{version}
-%patch -P 0
+%autosetup -n DSView-%{version} -p0
+sed -i '/^Encoding=/d' DSView/DSView.desktop
 
 %build
-cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} \
-    -DCMAKE_INSTALL_LIBDIR=%{_libdir} \
-    -DCMAKE_INSTALL_BINDIR=%{_bindir} \
-    -DCMAKE_BUILD_TYPE=Release .
-make %{?_smp_mflags}
+%cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+    -DCMAKE_POLICY_DEFAULT_CMP0167=OLD
+%cmake_build
 
 %install
-DESTDIR="%{buildroot}" make install
+%cmake_install
+
+%check
+desktop-file-validate DSView/DSView.desktop
 
 %files
+%license COPYING
+%doc DSView/README
 %{_bindir}/DSView
-%{_datadir}/DSView/
-%{_datadir}/icons/hicolor/scalable/apps/dsview.svg
-%{_datadir}/pixmaps/dsview.svg
-%{_datadir}/applications/dsview.desktop
+%{_datadir}/DSView
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 %{_udevrulesdir}/60-dreamsourcelab.rules
-%{_datadir}/libsigrokdecode4DSL/
+%{_datadir}/libsigrokdecode4DSL
+%{_datadir}/pixmaps/%{name}.svg
 
 %changelog
+* Tue Mar 17 2026 nobody <nobody@nobody.com> - 1.3.2-2
+- Fix modern toolchain compatibility in bundled libsigrok sources
+- Re-enable automatic runtime dependency generation
+- Keep the build on standard RPM CMake macros and validated desktop files
+
 * Sat May 11 2024 nobody <nobody@nobody.com> - 1.3.2
-  - new version
+- new version

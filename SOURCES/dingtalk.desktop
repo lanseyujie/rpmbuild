@@ -1,8 +1,9 @@
 [Desktop Entry]
 Categories=Chat;Network;
-Comment=DingTalk
+Comment=Enterprise communication and collaboration client
+Comment[zh_CN]=企业协同办公与即时通讯客户端
 Exec=dingtalk %u
-GenericName=dingtalk
+GenericName=DingTalk
 Icon=dingtalk
 Keywords=dingtalk;
 MimeType=x-scheme-handler/dingtalk;

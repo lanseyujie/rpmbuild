@@ -2,7 +2,7 @@
 Name=Typora
 Comment=a minimal Markdown reading & writing app.
 GenericName=Markdown Editor
-Exec=typora %U
+Exec=typora --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime %U
 Icon=typora
 Type=Application
 StartupNotify=true

@@ -1,15 +1,6 @@
---- libsigrok4DSL/output/csv.c	2024-11-05 02:43:10.000000000 +0000
-+++ libsigrok4DSL/output/csv.c	2025-06-18 02:41:09.286013772 +0000
-@@ -298,7 +298,7 @@
-                     pFlagCheck++;
-                 }
- 
--                g_string_append_printf(*out, tmp_buffer);
-+                g_string_append(*out, tmp_buffer);
-             }
- 
-             for (j = 0; j < ctx->num_enabled_channels; j++) {
-@@ -365,7 +365,7 @@
+--- libsigrok4DSL/output/csv.c	2026-03-17 16:45:22.155887384 +0800
++++ libsigrok4DSL/output/csv.c	2026-03-17 16:45:22.161830976 +0800
+@@ -332,7 +332,7 @@
         for (i = 0; i < (uint64_t)analog->num_samples; i++) {
              ch_cfg_dex = 0;
  
@@ -18,3 +9,34 @@
  
                 if (enalbe_channel_flags[j] == 0){
                      continue;
+--- libsigrok4DSL/strutil.c	2026-03-17 16:45:22.156942694 +0800
++++ libsigrok4DSL/strutil.c	2026-03-17 16:45:22.163236038 +0800
+@@ -21,6 +21,7 @@
+ #include "libsigrok-internal.h"
+ #include <stdlib.h>
+ #include <string.h>
++#include <strings.h>
+ #include <stdio.h>
+ #include "log.h"
+ 
+--- libsigrok4DSL/input/in_wav.c	2026-03-17 16:45:22.157842435 +0800
++++ libsigrok4DSL/input/in_wav.c	2026-03-17 16:45:22.164316657 +0800
+@@ -24,6 +24,7 @@
+ #include <unistd.h>
+ #include <fcntl.h>
+ #include <string.h>
++#include <strings.h>
+ #include "../log.h"
+ #include <stdlib.h>
+ 
+--- libsigrok4DSL/lib_main.c	2026-03-17 16:57:08.889591175 +0800
++++ libsigrok4DSL/lib_main.c	2026-03-17 16:57:42.997013200 +0800
+@@ -1693,7 +1693,7 @@
+ #ifdef _WIN32
+ 	Sleep(ms);
+ #else
+-	usleep(ms * 1000);
++	g_usleep((gulong)ms * 1000);
+ #endif
+ }
+ 

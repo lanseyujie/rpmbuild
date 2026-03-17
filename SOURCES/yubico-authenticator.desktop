@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Yubico Authenticator
 GenericName=Yubico Authenticator
-Exec=/opt/yubico-authenticator/authenticator
-Icon=yubico-authenticator.svg
+Exec=yubico-authenticator
+Icon=yubico-authenticator
 Type=Application
 Categories=Utility;
 Keywords=Yubico;Authenticator;

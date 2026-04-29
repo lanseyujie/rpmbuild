@@ -5,8 +5,8 @@
 %undefine __arch_install_post
 
 Name:           typora
-Version:        1.12.4
-Release:        2%{?dist}
+Version:        1.13.4
+Release:        1%{?dist}
 Summary:        Markdown editor
 License:        Proprietary
 URL:            https://typora.io
@@ -50,6 +50,10 @@ xmllint --noout %{SOURCE3}
 %{app_root}/
 
 %changelog
+* Tue Apr 14 2026 nobody <nobody@nobody.com> - 1.13.4
+- Fix crash on macOS 26.4
+- Fix list parsing rules.
+
 * Tue Mar 17 2026 nobody <nobody@nobody.com> - 1.12.4-2
 - Replace scriptlet-created symlink with a packaged symlink
 - Install MIME metadata under the standard system directory

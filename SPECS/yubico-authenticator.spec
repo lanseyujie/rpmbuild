@@ -5,8 +5,8 @@
 %undefine __arch_install_post
 
 Name:           yubico-authenticator
-Version:        7.3.2
-Release:        2%{?dist}
+Version:        7.3.3
+Release:        1%{?dist}
 Summary:        Yubico Authenticator
 License:        Apache-2.0
 URL:            https://github.com/Yubico/yubioath-flutter
@@ -48,6 +48,11 @@ desktop-file-validate %{SOURCE1}
 %{app_root}/
 
 %changelog
+* Wed Apr 15 2026 nobody <nobody@nobody.com> - 7.3.3
+- FIDO: Optionally remember read-only access for Passkeys.
+- Fix(linux): use persisted app window size.
+- Binaries compiled with Flutter 3.41.6, and Python 3.14.4 (desktop).
+
 * Tue Mar 17 2026 nobody <nobody@nobody.com> - 7.3.2-2
 - Normalize extracted source naming and install paths
 - Add a stable command symlink and validate the desktop file

@@ -8,12 +8,12 @@
 
 # https://dtapp-pub.dingtalk.com/dingtalk-desktop/xc_dingtalk_update/linux_deb/Update/other/amd64/linux_dingtalk_update_package_gray.json
 Name:           dingtalk
-Version:        8.1.0.5121501
-Release:        2%{?dist}
+Version:        8.1.0.6021101
+Release:        1%{?dist}
 Summary:        DingTalk desktop client
 License:        Proprietary
 URL:            https://www.dingtalk.com
-Source0:        com.alibabainc.dingtalk_%{version}_amd64.deb
+Source0:        https://dtapp-pub.dingtalk.com/dingtalk-desktop/xc_dingtalk_update/linux_deb/Release/com.alibabainc.dingtalk_%{version}_amd64.deb
 Source1:        dingtalk.desktop
 Source2:        dingtalk.svg
 Source3:        dingtalk
@@ -57,6 +57,9 @@ desktop-file-validate %{SOURCE1}
 %{app_root}/
 
 %changelog
+* Wed 29 Apr 2026 nobody <nobody@nobody.com> - 8.1.0.6021101
+- new version
+
 * Tue Mar 17 2026 nobody <nobody@nobody.com> - 8.1.0.5121501-2
 - Normalize RPM macro usage and install paths
 - Restrict builds to x86_64 and validate the desktop file
